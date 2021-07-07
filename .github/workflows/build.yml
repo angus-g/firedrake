@@ -4,7 +4,7 @@ on:
   # Push to master or PR
   push:
     branches:
-      - master
+      - testing
   pull_request:
 
 jobs:
@@ -32,6 +32,8 @@ jobs:
       COMPLEX: ${{ matrix.complex }}
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: master
       - name: Cleanup
         if: ${{ always() }}
         run: |

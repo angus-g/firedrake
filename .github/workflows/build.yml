@@ -62,6 +62,21 @@ jobs:
         run: |
           . ../build/bin/activate
           cd ../build/src/pyadjoint; python -m pytest --durations=200 -n 12 -v tests/firedrake_adjoint
+      - name: Checkout stokes-fire
+        if: ${{ matrix.scalar-type == 'real' }}
+        uses: actions/checkout@v2
+        with:
+          repository: g-adopt/stokes-fire
+          token: ${{ secrets.GADOPT_PAT }}
+          path: stokes-fire
+          ref: testing
+      - name: Test stokes-fire
+        if: ${{ matrix.scalar-type == 'real' }}
+        run: |
+          . ../build/bin/activate
+          cd stokes-fire
+          make test
+          python -m pytest
       - name: Cleanup
         # Belt and braces: clean up before and after the run.
         if: ${{ always() }}

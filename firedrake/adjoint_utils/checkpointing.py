@@ -278,7 +278,7 @@ class CheckpointFunction(CheckpointBase, OverloadedType):
 
     def __init__(self, function):
         from firedrake.checkpointing import CheckpointFile
-        self.name = function.name
+        self.name = function.name()
         self.mesh = function.function_space().mesh()
         self.file = current_checkpoint_file()
 
@@ -310,7 +310,7 @@ class CheckpointFunction(CheckpointBase, OverloadedType):
             function = infile.load_function(self.mesh, self.stored_name,
                                             idx=self.stored_index)
         return type(function)(function.function_space(),
-                              function.dat, name=self.name(), count=self.count)
+                              function.dat, name=self.name, count=self.count)
 
     def _ad_restore_at_checkpoint(self, checkpoint):
         return checkpoint.restore()
